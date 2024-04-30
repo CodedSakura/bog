@@ -1,0 +1,31 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="CodedSakura" />
+  <meta name="description" content="CodedSakura's blog page">
+  <meta name="keywords" content="blog,article,blogging" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e8e" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#808" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Bog.CodedSakura.dev</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="icon" type="image/svg" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+</head>
+<body>
+<header>
+  <h1>Bog - CodedSakura's blog page</h1>
+</header>
+<main>
+  <ul>
+    {{#each posts}}
+      <li><a href="{{this.url}}">{{this.title}}</a></li>
+    {{/each}}
+  </ul>
+</main>
+<footer>
+</footer>
+</body>
+</html>
