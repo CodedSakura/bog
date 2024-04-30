@@ -22,6 +22,14 @@ marked.use({
         `    <a href="#${escapedText}" class="anchor">${text}</a>\n` +
         `</h${level}>\n`;
     },
+    link(href, title, text) {
+      const internal = /^#|^\.?\/|^https:\/\/bog\.codedsakura\.dev/.test(href);
+      const titleProp = title ? ` title=${title}` : "";
+      if (internal) {
+        return `<a href="${href}"${titleProp}>${text}</a>`;
+      }
+      return `<a href="${href}"${titleProp} class="external" target="_blank">${text}</a>`;
+    }
   },
 });
 
