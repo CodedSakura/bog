@@ -5,7 +5,7 @@
 [meta:published]:# 'false'
 [meta:published_on]:# '2000-01-01'
 [meta:last_updated_on]:# '2023-10-20'
-[meta:tags]:# 'typescript,events,keyboard,webapp'
+[meta:tags]:# 'TypeScript;Events;Keyboard;WebApp'
 [meta:permalink]:# 'https://bog.codedsakura.dev/posts/001'
 
 # WebApp Global Shortcuts - #001
