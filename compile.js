@@ -3,7 +3,7 @@ const { readdir, readFile, writeFile, mkdir, cp } = require("fs/promises");
 const path = require("path");
 const handlebars = require("handlebars");
 
-const outputDir = process.env.OUT_DIR_NAME ?? "./out";
+const outputDir = process.env.OUT_DIR ?? "./out";
 const postsDirName = process.env.POSTS_DIR_NAME ?? "posts";
 const templateFile = process.env.TEMPLATE_FILE ?? "./template.handlebars";
 const landingFile = process.env.LANDING_FILE ?? "./landing.handlebars";
