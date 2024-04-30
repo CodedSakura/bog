@@ -12,7 +12,7 @@
 # The Fully Custom Keyboard Project - #004
 
 _i have been blursed with the knowledge that i can now create a custom keyboard
-for myslef..._
+for myself..._
 
 Now that I know a bit about PCB design (none in actual practice though), I have
 realised that I can design my own keyboard.
