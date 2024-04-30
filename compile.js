@@ -4,6 +4,7 @@ const path = require("path");
 const handlebars = require("handlebars");
 
 const outputDir = process.env.OUT_DIR ?? "./out";
+const pubDir = process.env.PUB_DIR ?? "./public";
 const postsDirName = process.env.POSTS_DIR_NAME ?? "posts";
 const templateFile = process.env.TEMPLATE_FILE ?? "./template.handlebars";
 const landingFile = process.env.LANDING_FILE ?? "./landing.handlebars";
@@ -55,6 +56,15 @@ function extractExtra(mdFile) {
 
 async function main() {
   await mkdir(postsOutput, { recursive: true });
+
+  await Promise.all((await readdir(pubDir)).map(f => {
+    return cp(
+      path.join(pubDir, f),
+      path.join(outputDir, f),
+      { recursive: true },
+    );
+  }));
+
   const template = handlebars.compile(await readFile(templateFile, { encoding: "utf-8" }));
 
   const directories = (await readdir("./", { withFileTypes: true }))
@@ -86,9 +96,6 @@ async function main() {
 
     return pages.find(v => v.name === "index.md");
   }));
-
-  console.log(posts.sort((a, b) => Number(a.meta.number) - Number(b.meta.number))
-    .map(({ meta: { permalink: url }, extra: { title } }) => ({ url, title })));
 
   const landingTemplate = handlebars.compile(await readFile(landingFile, { encoding: "utf-8" }));
   const landingContent = landingTemplate({
