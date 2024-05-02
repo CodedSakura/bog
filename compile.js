@@ -48,6 +48,10 @@ handlebars.registerHelper("join", (joiner, list) => {
 handlebars.registerHelper("stripNewlines", text => {
   return text.replaceAll("\n", " ");
 });
+handlebars.registerHelper("eachSeparated", function (separator, list, options) {
+  return list.map(options.fn).join(separator);
+});
+handlebars.registerHelper("bool", text => ["yes", "true", "y"].includes(text.toLowerCase()));
 
 
 function extractMetadata(mdFile) {
