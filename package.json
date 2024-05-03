@@ -2,10 +2,13 @@
   "name": "bog",
   "packageManager": "yarn@3.6.4",
   "dependencies": {
+    "@types/node": "^20.12.8",
     "handlebars": "^4.7.8",
-    "marked": "^12.0.2"
+    "marked": "^12.0.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
   },
   "scripts": {
-    "build": "node compile.js"
+    "build": "ts-node --typeCheck compile.ts"
   }
 }
