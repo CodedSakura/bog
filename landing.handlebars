@@ -20,9 +20,12 @@
   <h1>Bog - CodedSakura's blog page</h1>
 </header>
 <main>
+  Published posts:
   <ul>
     {{#each posts}}
-      <li><a href="{{this.url}}">{{this.title}}</a></li>
+      {{#if this.meta.published}}
+        <li><a href="{{this.meta.permalink}}">{{this.extra.title}}</a></li>
+      {{/if}}
     {{/each}}
   </ul>
 </main>

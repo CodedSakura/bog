@@ -1,5 +1,6 @@
 import * as handlebars from "handlebars";
 import { marked } from "marked";
+import assert from "node:assert";
 import { cp, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import * as path from "node:path";
 
@@ -12,13 +13,23 @@ const landingFile = process.env.LANDING_FILE ?? "./landing.handlebars";
 const postsOutput = path.join(outputDir, postsDirName);
 
 
-interface MetaData {
+interface _Base_MetaData {
+  author: string,
+  number: number,
+  projects: string[],
+  started_on: Date,
+  published: boolean,
+  last_updated_on: Date,
+  tags: string[],
+  permalink: string,
   [key: string]: any,
 }
 
+type MetaData = _Base_MetaData | ({ published: true, published_on: Date } & { published: false });
+
 interface ExtraData {
   title: string,
-  description: string,
+  description?: string,
 }
 
 
@@ -43,39 +54,46 @@ marked.use({
   },
 });
 
-handlebars.registerHelper("split", (separator, text) => {
-  if (typeof text === "string") {
-    return text.split(separator);
-  }
-  return [ text ];
-});
+
 handlebars.registerHelper("join", (joiner, list) => {
   if (Array.isArray(list)) {
     return list.join(joiner);
   }
   return list;
 });
-handlebars.registerHelper("stripNewlines", text => {
-  return text.replaceAll("\n", " ");
-});
 handlebars.registerHelper("eachSeparated", function (separator, list, options) {
   return list.map(options.fn).join(separator);
 });
-handlebars.registerHelper("bool", text => ["yes", "true", "y"].includes(text.toLowerCase()));
 
 
 function extractMetadata(mdFile: string): MetaData {
-  if (!/^(?:\[.+\n)+/.test(mdFile)) {
-    return [];
-  }
+  assert(/^(?:\[.+\n)+/.test(mdFile));
   const tags = /^(?:\[.+\n)+/.exec(mdFile)![0];
-  return [...tags.matchAll(/\[meta:(\w+)].+?'(.+)'/g)]
-        .reduce((acc, [ , k, v ]) => ({ ...acc, [k!]: v }), {});
+  const raw = [ ...tags.matchAll(/\[meta:(\w+)].+?'(.+)'/g) ]
+        .reduce((acc, [ , k, v ]) => ({ ...acc, [k!]: v }), {} as Record<string, string>);
+
+  const published = [ "yes", "true", "y" ].includes(raw.published);
+  return {
+    ...raw,
+    author: raw.author,
+    number: Number(raw.number),
+    projects: raw.projects.split(";"),
+    started_on: new Date(raw.started_on),
+    published: published,
+    published_on: published ? new Date(raw.published_on) : undefined,
+    last_updated_on: new Date(raw.last_updated_on),
+    tags: raw.tags.split(";"),
+    permalink: raw.permalink,
+  };
 }
 
 function extractExtra(mdFile: string): ExtraData {
   const [ , title, description ] = /^[\w\W]+?\n#\s*(.+)\s*(?:([\w\W]+?)\s*?\n#)?/.exec(mdFile) ?? [];
-  return { title, description };
+
+  return {
+    title,
+    description: description?.replace(/\n/g, " "),
+  };
 }
 
 
@@ -124,8 +142,7 @@ async function main() {
 
   const landingTemplate = handlebars.compile(await readFile(landingFile, { encoding: "utf-8" }));
   const landingContent = landingTemplate({
-    posts: posts.sort((a, b) => Number(a.meta.number) - Number(b.meta.number))
-      .map(({ meta: { permalink: url }, extra: { title } }) => ({ url, title })),
+    posts: posts.sort((a, b) => a.meta.numbe - b.meta.number),
   });
   await writeFile(path.join(outputDir, "index.html"), landingContent, { encoding: "utf-8" });
 }

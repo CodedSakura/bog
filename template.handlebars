@@ -7,9 +7,10 @@
   {{#if meta.description}}
     <meta name="description" content="{{meta.description}}">
   {{else}}
-    {{#if extra.description}}<meta name="description" content="{{stripNewlines extra.description}}">{{/if}}
+    {{#if extra.description}}
+      <meta name="description" content="{{extra.description}}">{{/if}}
   {{/if}}
-  <meta name="keywords" content="{{join "," (split ";" meta.tags)}}" />
+  <meta name="keywords" content="{{join "," meta.tags}}" />
   <meta name="generator" content="https://github.com/CodedSakura/bog" />
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#e8e" />
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#808" />
@@ -24,11 +25,11 @@
 <header>
   #{{meta.number}}<br/>
   author: {{meta.author}}<br/>
-  part of projects: {{#eachSeparated ", " (split ";" meta.projects)}}<a href="/projects/{{this}}">{{this}}</a>{{/eachSeparated}}<br/>
+  part of projects: {{#eachSeparated ", " meta.projects}}<a href="/projects/{{this}}">{{this}}</a>{{/eachSeparated}}<br />
   started on: {{meta.started_on}}<br/>
-  {{#if (bool meta.published)}}published: {{meta.published_on}}, {{bool meta.published}}<br/>{{/if}}
+  {{#if meta.published}}published: {{meta.published_on}}<br />{{/if}}
   last update: {{meta.last_updated_on}}<br/>
-  tags: {{#eachSeparated ", " (split ";" meta.tags)}}<a href="/tags/{{this}}">{{this}}</a>{{/eachSeparated}}<br/>
+  tags: {{#eachSeparated ", " meta.tags}}<a href="/tags/{{this}}">{{this}}</a>{{/eachSeparated}}<br />
   permalink: <a href="{{meta.permalink}}">{{meta.permalink}}</a>
 </header>
 <article>
