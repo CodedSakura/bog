@@ -2,8 +2,10 @@
 [meta:number]:# '000'
 [meta:projects]:# 'Bog;Website'
 [meta:started_on]:# '2023-10-20'
-[meta:published]:# 'false'
-[meta:published_on]:# '2000-01-01'
+
+[meta:published]:# 'true'
+
+[meta:published_on]:# '2024-05-03'
 [meta:last_updated_on]:# '2024-04-30'
 [meta:tags]:# 'Blog;WebSite;Markdown'
 [meta:permalink]:# 'https://bog.codedsakura.dev/posts/000'
